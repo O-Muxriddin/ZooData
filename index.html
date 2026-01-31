@@ -492,97 +492,100 @@
           </div>
         </div>
       </div>
-
-      <dialog
-        id="editModal"
-        class="rounded-xl p-6 w-150 max-w-[95%] bg-white shadow-lg"
+      <div
+        class="flex flex-col w-full h-full justify-center items-center mt-30"
       >
-        <div class="flex items-center justify-between border-b pb-4">
-          <h3 class="text-lg font-medium">Edit Animal</h3>
-        </div>
-        <form method="dialog">
-          <button
-            type="button"
-            data-modal-hide
-            class="text-gray-500 hover:text-gray-800"
-          >
-            ✕
-          </button>
-        </form>
-
-        <form id="elEditForm" class="grid gap-4 py-4">
-          <input
-            type="text"
-            name="name"
-            placeholder="Name"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <input
-            type="number"
-            name="speed"
-            placeholder="Speed"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <select name="category" class="border rounded px-3 py-2 w-full">
-            <option value="Mammal">Mammal</option>
-            <option value="Reptile">Reptile</option>
-            <option value="Bird">Bird</option>
-            <option value="Fish">Fish</option>
-          </select>
-          <input
-            type="text"
-            name="soundText"
-            placeholder="Sound"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <input
-            type="text"
-            name="year"
-            placeholder="Year"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <input
-            type="number"
-            name="weight"
-            placeholder="Weight"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <input
-            type="text"
-            name="color"
-            placeholder="Color"
-            class="border rounded px-3 py-2 w-full"
-          />
-          <select name="habitat" class="border rounded px-3 py-2 w-full">
-            <option value="Home">Home</option>
-            <option value="Forest">Forest</option>
-            <option value="Mountain">Mountain</option>
-            <option value="Desert">Desert</option>
-            <option value="Field">Field</option>
-            <option value="Savanna">Savanna</option>
-            <option value="Ocean">Ocean</option>
-          </select>
-          <select name="isWild" class="border rounded px-3 py-2 w-full">
-            <option value="true">True</option>
-            <option value="false">False</option>
-          </select>
-
-          <div class="flex justify-end gap-2 mt-4">
-            <button
-              type="reset"
-              class="px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200"
-            >
-              Tozalash
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-            >
-              Tasdiqlash
-            </button>
+        <dialog
+          id="editModal"
+          class="rounded-xl p-6 w-150 max-w-[95%] bg-white shadow-lg"
+        >
+          <div class="flex items-center justify-between border-b pb-4">
+            <h3 class="text-lg font-medium">Edit Animal</h3>
           </div>
-        </form>
-      </dialog>
+          <form method="dialog">
+            <button
+              type="button"
+              data-modal-hide
+              class="text-gray-500 hover:text-gray-800"
+            >
+              ✕
+            </button>
+          </form>
+
+          <form id="elEditForm" class="grid gap-4 py-4">
+            <input
+              type="text"
+              name="name"
+              placeholder="Name"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <input
+              type="number"
+              name="speed"
+              placeholder="Speed"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <select name="category" class="border rounded px-3 py-2 w-full">
+              <option value="Mammal">Mammal</option>
+              <option value="Reptile">Reptile</option>
+              <option value="Bird">Bird</option>
+              <option value="Fish">Fish</option>
+            </select>
+            <input
+              type="text"
+              name="soundText"
+              placeholder="Sound"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <input
+              type="text"
+              name="year"
+              placeholder="Year"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <input
+              type="number"
+              name="weight"
+              placeholder="Weight"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <input
+              type="text"
+              name="color"
+              placeholder="Color"
+              class="border rounded px-3 py-2 w-full"
+            />
+            <select name="habitat" class="border rounded px-3 py-2 w-full">
+              <option value="Home">Home</option>
+              <option value="Forest">Forest</option>
+              <option value="Mountain">Mountain</option>
+              <option value="Desert">Desert</option>
+              <option value="Field">Field</option>
+              <option value="Savanna">Savanna</option>
+              <option value="Ocean">Ocean</option>
+            </select>
+            <select name="isWild" class="border rounded px-3 py-2 w-full">
+              <option value="true">True</option>
+              <option value="false">False</option>
+            </select>
+
+            <div class="flex justify-end gap-2 mt-4">
+              <button
+                type="reset"
+                class="px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200"
+              >
+                Tozalash
+              </button>
+              <button
+                type="submit"
+                class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+              >
+                Tasdiqlash
+              </button>
+            </div>
+          </form>
+        </dialog>
+      </div>
     </main>
 
     <script src="./js/darkmode.js"></script>
