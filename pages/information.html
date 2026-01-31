@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/output.css" />
+  </head>
+  <body>
+    <div
+      class="container min-h-screen flex items-center justify-center bg-gray-100 p-4"
+    ></div>
+    <template id="template">
+      <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-6 space-y-4">
+        <h2 class="text-2xl font-bold text-center text-gray-800 mb-4">
+          Animal Info
+        </h2>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Name:</span>
+          <span class="font-semibold name"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Category:</span>
+          <span class="font-semibold category"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Speed:</span>
+          <span class="font-semibold speed"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Sound:</span>
+          <span class="font-semibold soundText"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Year:</span>
+          <span class="font-semibold year"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Weight:</span>
+          <span class="font-semibold weight"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Color:</span>
+          <span class="font-semibold color"></span>
+        </div>
+
+        <div class="flex justify-between border-b pb-2">
+          <span class="text-gray-500">Habitat:</span>
+          <span class="font-semibold habitat"></span>
+        </div>
+
+        <div class="flex justify-between">
+          <span class="text-gray-500">Is Wild:</span>
+          <span
+            class="font-semibold isWild px-3 py-1 rounded-full text-sm bg-green-100 text-green-700"
+          ></span>
+        </div>
+      </div>
+    </template>
+
+  
+    <script type="module" src="../js/info.js"></script>
+  </body>
+</html>

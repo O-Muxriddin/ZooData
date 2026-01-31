@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="./favicon-96x96.png"
+      sizes="96x96"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="shortcut icon" href="./favicon.ico" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="ZooData" />
+    <link rel="manifest" href="./site.webmanifest" />
+    <!-- dark  -->
+    <script>
+      // On page load or when changing themes, best to add inline in `head` to avoid FOUC
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+    <title>ZooData</title>
+    <link rel="stylesheet" href="css/output.css" />
+  </head>
+  <body class="dark:bg-gray-900">
+    <header>
+      <nav
+        class="bg-neutral-primary fixed w-full z-20 top-0 start-0 border-b border-default"
+      >
+        <div
+          class="`max-w-screen-xl` flex flex-wrap items-center justify-between mx-auto p-4"
+        >
+          <div
+            href="https://flowbite.com/"
+            class="flex items-center rtl:space-x-reverse gap-2"
+          >
+            <img
+              src="./images/panja.png"
+              class="h-10 w-10 rounded-full object-cover"
+              alt="Flowbite Logo"
+            />
+            <span
+              class="self-center text-xl text-heading font-semibold whitespace-nowrap"
+              >ZooData</span
+            >
+          </div>
+          <div
+            class="inline-flex gap-5 md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse"
+          >
+            <button
+              id="AddButton"
+              data-modal-target="crud-modal"
+              data-modal-toggle="crud-modal"
+              type="button"
+              class="js-btn text-white bg-brand cursor-pointer hover:bg-brand-strong box-border border border-transparent shadow-xs font-medium leading-5 rounded-base text-sm px-3 py-2 focus:outline-none"
+            >
+              +Add
+            </button>
+
+            <!-- Select  -->
+            <form class="max-w-sm mx-auto">
+              <label
+                for="countries"
+                class="block mb-2.5 text-sm font-medium text-heading"
+              ></label>
+              <select
+                id="countries"
+                class="block select w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+              >
+                <option selected>Category</option>
+                <option value="Mammal">Mammal</option>
+                <option value="Reptile">Reptile</option>
+                <option value="Bird">Bird</option>
+                <option value="Fish">Fish</option>
+              </select>
+            </form>
+
+            <!-- select end  -->
+
+            <button
+              id="theme-toggle"
+              type="button"
+              class="text-gray-500 cursor-pointer dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg text-sm p-2.5"
+            >
+              <svg
+                id="theme-toggle-dark-icon"
+                class="hidden w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+                ></path>
+              </svg>
+              <svg
+                id="theme-toggle-light-icon"
+                class="hidden w-5 h-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                  fill-rule="evenodd"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <div
+        id="cardContainer"
+        class="grid grid-cols-1 p-4 ml-10 mt-30 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 2xl:grid-cols-5 4xl:grid-cols-6"
+      ></div>
+
+      <template id="cardTemplate">
+        <div class="grid justify-center gap-5">
+          <div
+            class="bg-neutral-primary-soft block max-w-sm mb-5 p-6 border border-default rounded-base shadow-xs"
+          >
+            <div class="grid grid-cols-2 gap-6">
+              <!-- Chap ustun -->
+              <div class="space-y-3">
+                <div class="tracking-tight text-heading leading-6">
+                  Name : <span class="js-name text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Category : <span class="js-p text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Wild : <span class="js-span text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Speed : <span class="js-speed text-body"></span>
+                </div>
+              </div>
+
+              <!-- O‘ng ustun -->
+              <div class="space-y-3">
+                <div class="tracking-tight text-heading leading-6">
+                  Sound : <span class="js-sound text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Year : <span class="js-year text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Weight : <span class="js-weight text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Color : <span class="js-color text-body"></span>
+                </div>
+                <div class="tracking-tight text-heading leading-6">
+                  Habitat : <span class="js-habitat text-body"></span>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex gap-5 mt-4 justify-center items-center">
+              <button
+                onclick="editModal.showModal()"
+                class="js-edit px-4 cursor-pointer py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-500 transition"
+              >
+                <div class="flex gap-3">
+                  Edit
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 15 15"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M11.8536 1.14645C11.6583 0.951184 11.3417 0.951184 11.1465 1.14645L3.71455 8.57836C3.62459 8.66832 3.55263 8.77461 3.50251 8.89155L2.04044 12.303C1.9599 12.491 2.00189 12.709 2.14646 12.8536C2.29103 12.9981 2.50905 13.0401 2.69697 12.9596L6.10847 11.4975C6.2254 11.4474 6.3317 11.3754 6.42166 11.2855L13.8536 3.85355C14.0488 3.65829 14.0488 3.34171 13.8536 3.14645L11.8536 1.14645ZM4.42166 9.28547L11.5 2.20711L12.7929 3.5L5.71455 10.5784L4.21924 11.2192L3.78081 10.7808L4.42166 9.28547Z"
+                      fill="currentColor"
+                      fill-rule="evenodd"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+              <div class="animal-card">
+                <button
+                  class="js-delete cursor-pointer px-4 py-2 bg-red-600 text-white rounded-xl hover:bg-red-500 transition"
+                  data-id="data.id"
+                >
+                  <div class="flex gap-2">
+                    Delete
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 15 15"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.5 1C5.22386 1 5 1.22386 5 1.5C5 1.77614 5.22386 2 5.5 2H9.5C9.77614 2 10 1.77614 10 1.5C10 1.22386 9.77614 1 9.5 1H5.5ZM3 3.5C3 3.22386 3.22386 3 3.5 3H5H10H11.5C11.7761 3 12 3.22386 12 3.5C12 3.77614 11.7761 4 11.5 4H11V12C11 12.5523 10.5523 13 10 13H5C4.44772 13 4 12.5523 4 12V4L3.5 4C3.22386 4 3 3.77614 3 3.5ZM5 4H10V12H5V4Z"
+                        fill="currentColor"
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                      ></path>
+                    </svg>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+
+      <template id="skeletonTemplate">
+        <div
+          class="max-w-sm p-6 border border-gray-700 m-5 rounded-lg shadow animate-pulse bg-gray-800"
+        >
+          <div class="grid grid-cols-2 gap-3 mb-6">
+            <div class="h-5 bg-gray-700 rounded">
+              <div class="h-5 bg-gray-700 rounded"></div>
+            </div>
+            <div class="h-5 bg-gray-700 rounded"></div>
+
+            <div class="h-5 bg-gray-700 rounded"></div>
+            <div class="h-5 bg-gray-700 rounded"></div>
+
+            <div class="h-5 bg-gray-700 rounded"></div>
+            <div class="h-5 bg-gray-700 rounded"></div>
+
+            <div class="h-5 bg-gray-700 rounded"></div>
+            <div class="h-5 bg-gray-700 rounded"></div>
+          </div>
+
+          <!-- Buttons -->
+          <div class="flex gap-3 justify-center">
+            <div class="h-10 w-20 bg-gray-700 rounded-lg"></div>
+            <div class="h-10 w-24 bg-gray-700 rounded-lg"></div>
+          </div>
+        </div>
+      </template>
+
+      <div
+        id="skeletonLoader"
+        class="hidden grid` gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 p-6"
+      ></div>
+
+      >
+
+      <!-- Main modal -->
+      <div
+        id="crud-modal"
+        tabindex="-1"
+        aria-hidden="true"
+        class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      >
+        <div class="relative p-4 w-full max-w-md max-h-full">
+          <!-- Modal content -->
+          <div
+            class="relative bg-neutral-primary-soft border border-default rounded-base shadow-sm p-4 md:p-6"
+          >
+            <!-- Modal header -->
+            <div
+              class="flex items-center justify-between border-b border-default pb-4 md:pb-5"
+            >
+              <h3 class="text-lg font-medium text-heading">
+                Fill in to make an animal.
+              </h3>
+              <button
+                type="button"
+                class="text-body bg-transparent hover:bg-neutral-tertiary hover:text-heading rounded-base text-sm w-9 h-9 ms-auto inline-flex justify-center items-center"
+                data-modal-hide="crud-modal"
+              >
+                <svg
+                  class="w-5 h-5"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M6 18 17.94 6M18 18 6.06 6"
+                  />
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <!-- Modal body -->
+            <form id="form">
+              <div class="grid gap-4 grid-cols-2 py-4 md:py-6">
+                <div class="col-span-2">
+                  <label
+                    for="name"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Name</label
+                  >
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Type animal name"
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Speed</label
+                  >
+                  <input
+                    type="number"
+                    max="100"
+                    min="0"
+                    name="speed"
+                    id="price"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Speed"
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="category"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Category</label
+                  >
+                  <select
+                    name="category"
+                    class="block select w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                  >
+                    <option selected>Category</option>
+                    <option value="Mammal">Mammal</option>
+                    <option value="Reptile">Reptile</option>
+                    <option value="Bird">Bird</option>
+                    <option value="Fish">Fish</option>
+                  </select>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Sound</label
+                  >
+                  <input
+                    type="text"
+                    name="soundText"
+                    id="price"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Sound animals"
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Year</label
+                  >
+                  <input
+                    type="text"
+                    name="year"
+                    id="price"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Year animals"
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Weight</label
+                  >
+                  <input
+                    type="number"
+                    name="weight"
+                    max="10000"
+                    min="1"
+                    id="price"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="Weight animals"
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                  >
+                    Color</label
+                  >
+                  <input
+                    type="text"
+                    name="color"
+                    id="price"
+                    class="bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand block w-full px-3 py-2.5 shadow-xs placeholder:text-body"
+                    placeholder="The color of the animal "
+                    required=""
+                  />
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="category"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Habitat</label
+                  >
+                  <select
+                    name="habitat"
+                    class="block select w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                  >
+                    <option selected value="Home">Home</option>
+                    <option value="Mountain">Mountain</option>
+                    <option value="Desert">Desert</option>
+                    <option value="Forest">Forest</option>
+                    <option value="Field">Field</option>
+                    <option value="Savanna">Savanna</option>
+                    <option value="Ocean">Ocean</option>
+                  </select>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="category"
+                    class="block mb-2.5 text-sm font-medium text-heading"
+                    >Category</label
+                  >
+                  <select
+                    name="isWild"
+                    id="countries"
+                    class="block select w-full px-3 py-2.5 bg-neutral-secondary-medium border border-default-medium text-heading text-sm rounded-base focus:ring-brand focus:border-brand shadow-xs placeholder:text-body"
+                  >
+                    <option selected value="true">True</option>
+                    <option value="folse">Folse</option>
+                  </select>
+                </div>
+              </div>
+              <div
+                class="flex items-center space-x-4 border-t border-default pt-4 md:pt-6"
+              >
+                <button
+                  type="submit"
+                  class="inline-flex items-center text-white bg-brand hover:bg-brand-strong box-border border border-transparent focus:ring-4 focus:ring-brand-medium shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+                >
+                  <svg
+                    class="w-4 h-4 me-1.5 -ms-0.5"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h14m-7 7V5"
+                    />
+                  </svg>
+                  Add new product
+                </button>
+                <button
+                  data-modal-hide="crud-modal"
+                  type="button"
+                  class="text-body bg-neutral-secondary-medium box-border border border-default-medium hover:bg-neutral-tertiary-medium hover:text-heading focus:ring-4 focus:ring-neutral-tertiary shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none"
+                >
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <dialog
+        id="editModal"
+        class="rounded-xl p-6 w-150 max-w-[95%] bg-white shadow-lg"
+      >
+        <div class="flex items-center justify-between border-b pb-4">
+          <h3 class="text-lg font-medium">Edit Animal</h3>
+        </div>
+        <form method="dialog">
+          <button
+            type="button"
+            data-modal-hide
+            class="text-gray-500 hover:text-gray-800"
+          >
+            ✕
+          </button>
+        </form>
+
+        <form id="elEditForm" class="grid gap-4 py-4">
+          <input
+            type="text"
+            name="name"
+            placeholder="Name"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <input
+            type="number"
+            name="speed"
+            placeholder="Speed"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <select name="category" class="border rounded px-3 py-2 w-full">
+            <option value="Mammal">Mammal</option>
+            <option value="Reptile">Reptile</option>
+            <option value="Bird">Bird</option>
+            <option value="Fish">Fish</option>
+          </select>
+          <input
+            type="text"
+            name="soundText"
+            placeholder="Sound"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <input
+            type="text"
+            name="year"
+            placeholder="Year"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <input
+            type="number"
+            name="weight"
+            placeholder="Weight"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <input
+            type="text"
+            name="color"
+            placeholder="Color"
+            class="border rounded px-3 py-2 w-full"
+          />
+          <select name="habitat" class="border rounded px-3 py-2 w-full">
+            <option value="Home">Home</option>
+            <option value="Forest">Forest</option>
+            <option value="Mountain">Mountain</option>
+            <option value="Desert">Desert</option>
+            <option value="Field">Field</option>
+            <option value="Savanna">Savanna</option>
+            <option value="Ocean">Ocean</option>
+          </select>
+          <select name="isWild" class="border rounded px-3 py-2 w-full">
+            <option value="true">True</option>
+            <option value="false">False</option>
+          </select>
+
+          <div class="flex justify-end gap-2 mt-4">
+            <button
+              type="reset"
+              class="px-4 py-2 border rounded bg-gray-100 hover:bg-gray-200"
+            >
+              Tozalash
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            >
+              Tasdiqlash
+            </button>
+          </div>
+        </form>
+      </dialog>
+    </main>
+
+    <script src="./js/darkmode.js"></script>
+    <script type="module" src="./js/apps.js"></script>
+    <script src="/node_modules/flowbite/dist/flowbite.min.js"></script>
+  </body>
+</html>
