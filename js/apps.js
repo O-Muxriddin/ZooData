@@ -119,24 +119,28 @@ function edit(editData) {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
     body: JSON.stringify(editData),
   })
+    .then((res) => res.json())
     .then((res) => {
-      return res.json();
-    })
-    .then((res) => {
-      const result = state.map((el) => {
-        if (el.id === res.id) {
-          return res;
-        } else {
-          return el;
-        }
-      });
-      stateChanger(res.data);
+      const result = state.map((el) => el.id === res.id ? res : el);
+      
+  
+      stateChanger(result);
+      
       elEditModal.close();
-    });
+      elEditForm.reset();
+      
+    })
+    .catch(err => {
+      console.error("Edit error:", err);
+      showAlert("error", "Failed to update animal!");
+    })
+    .finally(()=>{});
 }
+
 elEditForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
   const formData = new FormData(elEditForm);
@@ -145,6 +149,51 @@ elEditForm.addEventListener("submit", (evt) => {
     result[key] = value;
   });
   edit(result);
+});
+
+elCardContainer.addEventListener("click", (evt) => {
+  const editBtn = evt.target.closest(".js-edit");
+
+  if (editBtn) {
+    if (isLogged() == false) {
+      evt.preventDefault();
+      location.href = "./register/login.html";
+      return;
+    }
+
+    elEditModal.showModal();
+
+    const id = editBtn.dataset.id;
+    console.log("Edit ID:", id);
+
+    const data = state.find((el) => el.id == id);
+
+    if (!data) {
+      console.error("Ma'lumot topilmadi!");
+      return;
+    }
+
+    console.log("Found data:", data);
+
+    elEditForm.name.value = data.name;
+    elEditForm.category.value = data.category;
+    elEditForm.speed.value = data.speed;
+    elEditForm.soundText.value = data.soundText;
+    elEditForm.year.value = data.year;
+    elEditForm.weight.value = data.weight;
+    elEditForm.color.value = data.color;
+    elEditForm.habitat.value = data.habitat;
+    elEditForm.isWild.value = data.isWild;
+
+    editedElementId = data.id;
+  }
+
+  if (evt.target.classList.contains(".js-btn")) {
+    if (isLogged() == false) {
+      evt.preventDefault();
+      location.href = "./register/login.html";
+    }
+  }
 });
 // delete
 elCardContainer.addEventListener("click", (e) => {
@@ -166,33 +215,7 @@ elCardContainer.addEventListener("click", (e) => {
   deleteBtn.textContent = "O‘chirilmoqda...";
 
   deleteAnimal(id);
-
-  // edit 
-
-  if (evt.target.classList("js-edit")) {
-    elEditModal.showModal();
-    const data = state.find((el) => el.id == evt.target.id);
-
-    elEditForm.name.value = data.name;
-    elEditForm.category.value = data.category;
-    elEditForm.speed.value = data.speed;
-    elEditForm.soundText.value = data.soundText;
-    elEditForm.year.value = data.year;
-    elEditForm.weight.value = data.weight;
-    elEditForm.color.value = data.color;
-    elEditForm.habitat.value = data.habitat;
-    elEditForm.isWild.value = data.isWild;
-    editedElementId = data.id;
-  }
-
-  if (evt.target.classList.contains(".js-btn")) {
-    if (isLogged() == false) {
-      evt.preventDefault();
-      location.href = "./register/login.html";
-    }
-  }
 });
-// end edit 
 
 elAddButton.addEventListener("click", (evt) => {
   if (isLogged() == false) {
@@ -224,7 +247,6 @@ elAddForm.addEventListener("submit", (evt) => {
     result[key] = value;
   });
 
-  // Boolean qiymatlarni o'zgartirish
   if (result.isWild === "true") result.isWild = true;
   if (result.isWild === "false") result.isWild = false;
 

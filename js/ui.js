@@ -18,8 +18,8 @@ export function ui(data) {
       element.habitat ?? "No habitat";
     clone.querySelector(".js-span").innerText = element.isWild ?? "No wild";
 
-    clone.querySelector(".js-edit").id = element.id ?? "No id";
-    clone.querySelector(".js-delete").id = element.id ?? "No Id";
+    clone.querySelector(".js-edit").dataset.id = element.id ?? "No id";
+    clone.querySelector(".js-delete").dataset.id = element.id ?? "No Id";
 
     elCardContainer.appendChild(clone);
   });
