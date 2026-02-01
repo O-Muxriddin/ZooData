@@ -119,27 +119,26 @@ function edit(editData) {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + token,
+      Authorization: "Bearer " + localStorage.getItem("token"),
     },
     body: JSON.stringify(editData),
   })
     .then((res) => res.json())
     .then((res) => {
-      const result = state.map((el) => el.id === res.id ? res : el);
-      
-  
+      const result = state.map((el) => (el.id === res.id ? res : el));
+
       stateChanger(result);
-      
+
       elEditModal.close();
       elEditForm.reset();
-      
     })
-    .catch(err => {
+    .catch((err) => {
       console.error("Edit error:", err);
       showAlert("error", "Failed to update animal!");
     })
-    .finally(()=>{});
+    .finally(() => {});
 }
+
 
 elEditForm.addEventListener("submit", (evt) => {
   evt.preventDefault();
